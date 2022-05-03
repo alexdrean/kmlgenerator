@@ -6,7 +6,9 @@ import kmlgenerator
 
 class MyServer(BaseHTTPRequestHandler):
     def do_GET(self):
+        # If path is correct
         if self.path == "/data.kml":
+            # Try generating a kml file and serving it
             try:
                 contents = kmlgenerator.generate()
                 self.send_response(200)
@@ -14,11 +16,13 @@ class MyServer(BaseHTTPRequestHandler):
                 self.end_headers()
                 print(contents)
                 self.wfile.write(bytes(contents, "utf-8"))
+            # If this fails serve an internal server error instead
             except Exception as e:
                 self.send_response(500)
                 self.send_header("Content-type", "text/html")
                 self.end_headers()
                 self.wfile.write(bytes("Internal server error: " + str(e), "utf-8"))
+        # Else path is incorrect
         else:
             self.send_response(404)
             self.send_header("Content-type", "text/html")
@@ -36,7 +40,7 @@ if __name__ == "__main__":
 
     try:
         webServer.serve_forever()
-    # Ctrl + C
+    # Suppress error when Ctrl + C and move on out of the try block
     except KeyboardInterrupt:
         pass
 

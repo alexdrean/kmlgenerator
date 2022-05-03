@@ -7,6 +7,7 @@ def generate():
     for item in data:
         # Modify this
         pnt = kml.newpoint(name=item["text"], coords=[(item["lat"], item["lng"])])
+        # Example if condition
         if item["text"].startswith("B"):
             pnt.labelstyle.color = 'ff0000ff'
         else:
